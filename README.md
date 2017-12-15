@@ -23,3 +23,4 @@ You can get the [presentation from this link](https://caballerog.github.io/tour-
   - `ng serve` - Run in frontend development mode on port 4200 using lazy loading
 ## To Do List
 - Data Flow.
+- Statement Management.
