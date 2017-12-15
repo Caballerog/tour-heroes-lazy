@@ -9,7 +9,7 @@ This repo is a demo for the AngularMalaga meetup at Málaga.
 - angular 5.0+ (new service worker)
 
 ## Presentation
-You can get the [presentation from this link](./99-heroes-presentation/) which is built using reveal.js.
+You can get the [presentation from this link](https://caballerog.github.io/tour-heroes-lazy) which is built using reveal.js.
 
 ## Topics
 - [Tour-of-heroes (Angular)](./00-tour-heroes).
