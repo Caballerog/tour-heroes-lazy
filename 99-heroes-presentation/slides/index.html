@@ -1,0 +1,628 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Angular: Lazy Loading</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <!-- <link rel="stylesheet" href="css/theme/black.css"> -->
+    <link rel="stylesheet" href="css/theme/night.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+
+    <!-- QR Codes -->
+    <script type="text/javascript" src="qrcodejs/qrcode.js"></script>
+
+    <!-- Manual style tweaks -->
+    <style>
+        /* Columns */
+
+        /* ref: https://stackoverflow.com/questions/30861845/how-to-use-two-column-layout-with-reveal-js#answer-44392145 */
+
+        body {
+            background-color: #222;
+        }
+
+        .cat {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            max-width: 60%;
+            z-index: -1;
+            background: url("images/cat2.png") center center no-repeat;
+            background-size: cover;
+            transition: all 300ms ease-in;
+            -moz-transition: all 300ms ease-in;
+            -webkit-transition: all 300ms ease-in;
+        }
+
+        .columns {
+            display: flex;
+        }
+
+        .col {
+            flex: 1;
+        }
+
+        .col-author {
+            flex: 0;
+        }
+
+        /* Colours */
+
+        .text-red {
+            color: #f00;
+        }
+
+        .text-green {
+            color: #0f0;
+        }
+
+        .text-yellow {
+            color: #ff0;
+        }
+
+        .text-blue {
+            color: #00f;
+        }
+
+        .text-primary {
+            color: #42affa;
+        }
+
+        .reveal section img.no-border {
+            margin: 0px;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        img.author {
+            border-radius: 500px;
+            max-width: 200px;
+            font-weight: bolder;
+        }
+
+        ul.author-desc li {
+            list-style-type: none;
+            padding: 0em 0.8em;
+        }
+
+        /* External Link */
+
+        .prj-link {
+            font-family: monospace !important;
+            font-size: 0.7em !important;
+        }
+
+        .prj-link::before {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            margin-right: 0.1em;
+            margin-left: 0.1em;
+            content: "";
+            background: url("images/micro-sd-card.png") no-repeat 0 0;
+            background-size: 100%;
+            vertical-align: middle;
+        }
+
+        /* QR Code */
+
+        .qrcode {
+            background-color: #fff;
+            padding: 1px 1px 1px 1px;
+            display: inline-block;
+        }
+
+        .half-size {
+            font-size: 0.5em !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <!-- =================== INTRODUCTION =================== -->
+            <section>
+                <section>
+                    <h3>Angular: Lazy Loading</h3>
+
+                    <div class="stretch">
+                        <div class="stretch">
+                            <div class="columns">
+                                <div class="col">
+                                    <div class="columns" style="font-size:0.7em">
+                                        <div class="col-author">
+                                            <img class="no-border author" src="images/authors/CarlosCaballero.jpg">
+                                        </div>
+                                        <div class="col">
+                                            <ul class="author-desc text-primary">
+                                                <li>PhD. Computer Science</li>
+                                                <li>Computer Science Teacher</li>
+                                                <li>Book Writer</li>
+                                                <li>Linkedin:
+                                                    <a href="https://www.linkedin.com/in/carloscaballerogonzalez/">https://www.linkedin.com/in/carloscaballerogonzalez/</a>
+                                                </li>
+                                                <li>Twitter:
+                                                    <a href="https://twitter.com/Carlillo">https://twitter.com/Carlillo</a>
+                                                </li>
+                                                <li>Github:
+                                                    <a href="https://github.com/Caballerog">https://github.com/Caballerog</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div style="text-align:left">
+                                        <a href="https://www.twitter.com/carlillo">Carlos Caballero</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="sretch">
+                            <img class="no-border" src="images/logo/angular.svg">
+                        </div>
+                    </div>
+
+                </section>
+
+                <section>
+                    <h2>Contents</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <div class="qrcode" align="center"></div>
+                            <div class="half-size">
+                                <a class="qrcode-link"></a>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <ul style="font-size:0.85em">
+                                <li>
+                                    <a href="#/scalable">Scalable Angular Application Architecture</a>
+                                </li>
+                                <ul>
+                                    <li>
+                                        <a href="#/structure">Structure of an application</a>
+                                    </li>
+                                    <ul>
+                                        <li>
+                                            <a href="#/what">What is Lazy Loading?</a>
+                                        </li>
+                                        <li>
+                                            <a href="#/frontend">Frontend: Heroes Tour</a>
+                                        </li>
+                                        <li>
+                                            <a href="#/lazy">Angular: Lazy Loading</a>
+                                        </li>
+                                        <li>
+                                            <a href="#/results">Results</a>
+                                        </li>
+
+                                    </ul>
+                                    <li>Data flow</li>
+                                    <li>Statement management</li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section id="scalable">
+                <section data-background="#28306a">
+                    <h2>Scalable Angular Application Architecture</h2>
+                    <img class="plain" src="images/heroes/heroes02.gif" width="60%" />
+
+                </section>
+
+                <section>
+                    <h3>Scalable Angular Application Architecture</h3>
+                    <ul>
+                        <li>Angular can only enforce the basics of application architecture.
+                            <small>(small or medium applications)</small>
+                        </li>
+                        <li>Big applications:
+                            <ul>
+                                <li>composed of dozens of modules.</li>
+                                <li>filled with complex data collections and complicated user flows.</li>
+                                <li>developed by a team across different countries.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <h3>In order to maintain high quality</h3>
+                    <ul>
+                        <li>
+                            <strong class="text-primary">Project structure </strong> – how to organize you project files, define and work with Angular
+                            modules and their dependencies</li>
+                        <li>
+                            <strong class="text-primary">Data flow architecture </strong> – devise a guide on how to define that way the data flows through
+                            your application layers
+                        </li>
+                        <li>
+                            <strong class="text-primary">State management </strong>– how to manage the state of GUI and propagate it between different
+                            application parts
+                        </li>
+                    </ul>
+                </section>
+            </section>
+
+            <section id="structure">
+                <section data-background="#28306a">
+                    <h2 style="word-wrap: normal">Structure of the application</h2>
+                    <img class="plain" src="images/heroes/heroes01.gif" width="40%" />
+                </section>
+                <section>
+                    <h2>Structure of the application - I</h2>
+                    <ul>
+                        <li>Usually, one of the first things you do when you set up a new project is to define the structure
+                            of the application.
+                        </li>
+                    </ul>
+                    <img class="plain" src="images/Structure_1.png" width="24%" />
+                </section>
+                <section>
+                    <h2>Structure of the application - II</h2>
+                    <ul>
+                        <li>An application must follow
+                            <em>the module-oriented project structure</em>.
+                            <li>Every module directory contains all files (code, styles, templates etc.) that are related to
+                                a given module.</li>
+                            <!--  <li>A very important element of this approach is isolation of modules.</li> -->
+                        </li>
+                    </ul>
+                    <img class="plain" src="images/Structure_2.png" width="24%" />
+                </section>
+                <section>
+                    <h3>Structure of the application - III</h3>
+                    <div class="columns">
+                        <div class="col">
+                            <ul>
+                                <li>
+                                    <span class="text-primary">AppModule </span> – the bootstrapping module
+                                    <!-- , responsible for launching the application -->
+                                </li>
+                                <li>
+                                    <span class="text-primary">CoreModule </span> – global services.
+                                </li>
+                                <li>
+                                    <span class="text-primary">SharedModule </span> – usually a set of components or services that will be reused in
+                                    other modules. </li>
+                                <li>
+                                    <span class="text-primary">Features </span>- All remaining modules should be isolated and independent.</li>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <img class="plain" src="images/Structure_3.png" width="100%" />
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h3>Structure of the application - IV</h3>
+
+                    <ul>
+                        <li>
+                            One of the most visible performance problems that users may encounter is the loading time of the application.
+                        </li>
+                        <li> There are multiple ways in which we can reduce the size of the application bundle, however, those
+                            are not within the subject matter of this talk.
+                        </li>
+
+                    </ul>
+                    <img class="plain" src="images/Structure_4.png" width="77%" />
+                </section>
+                <section id="what" data-background="#28306a">
+                    <h1 style="font-size: 3.5em">What is Lazy Loading?</h1>
+                    <blockquote>
+                        &ldquo; Lazy loading is a design pattern commonly used to defer initialization of an object until the point at which it is
+                        needed. (source: wikipedia) &rdquo;
+                    </blockquote>
+                </section>
+
+                <section>
+                    <h2>The benefits are</h2>
+                    <ul style="font-size:0.8em">
+                        <li>Keep the initial payload small</li>
+                        <li>Smaller payloads lead to faster download speeds</li>
+                        <li>Lower resource costs especially on mobile networks</li>
+                        <li>If a user doesn't visit a section of our app, they won't ever download those resources</li>
+
+                    </ul>
+                    <img class="plain" src="images/Lazy_1.png" width="58%" />
+                </section>
+
+                <section id="frontend" data-background="#28306a">
+                    <h2>Frontend: Heroes Tour </h2>
+                    <img class="plain" src="images/tour_heroes0.jpg" width="50%" />
+                    <pre>
+                            <code class="hljs" data-trim contenteditable>
+                                    $ cd 00-tour-heroes
+                                    $ npm install
+                                    $ npm start
+                            </code>
+                        </pre>
+                </section>
+                <section>
+                    <h3>Heroes Tour: Dashboard</h3>
+                    <img class="plain" src="images/tour_heroes1.png" />
+                </section>
+                <section>
+                    <h3>Heroes Tour: List of Heroes</h3>
+                    <img class="plain" src="images/tour_heroes2.png" />
+                </section>
+
+                <section id="lazy" data-background="#28306a">
+                    <h2 style="word-wrap: normal">Angular: Lazy Loading</h2>
+                    <img class="plain" src="images/heroes/heroes04.gif" width="60%" />
+                </section>
+                <section>
+                    <h2>Create SharedModule and CoreModule - I </h2>
+                    <pre>
+                            <code class="hljs" data-trim contenteditable>  
+                                  const SHARED_MODULES = [
+                                    CommonModule,
+                                    FormsModule,
+                                    HttpClientModule,
+                                    //Interesting modules :-)
+                                    /*  InlineEditorModule, */
+                                  ];
+                                  const SHARED_COMPONENTS: any[] = [];
+                                  
+                                  @NgModule({
+                                    imports: [...SHARED_MODULES],
+                                    exports: [...SHARED_MODULES, ...SHARED_COMPONENTS],
+                                    declarations: SHARED_COMPONENTS,
+                                  })
+                                  export class SharedModule { }
+                            </code>
+                        </pre>
+                </section>
+                <section>
+                    <h2>Create SharedModule and CoreModule - II </h2>
+                    <pre>
+                                <code class="hljs" data-trim contenteditable>  
+                                      export const CORE_SERVICES: any[] = [HeroService];
+                                      @NgModule({
+                                        imports: [
+                                          NoopAnimationsModule,
+                                          HttpClientInMemoryWebApiModule.forRoot(
+                                            InMemoryDataService, { dataEncapsulation: false }
+                                          )
+                                        ],
+                                        providers: CORE_SERVICES,
+                                      })
+                                      export class CoreModule {
+                                        constructor( @Optional() @SkipSelf() parentModule: CoreModule) {
+                                          if (parentModule) {
+                                            throw new Error("CoreModule is already loaded. Import it in the AppModule only");
+                                          }
+                                        }
+                                      }
+                                </code>
+                            </pre>
+                </section>
+
+                <section>
+                    <h2>Create FeatureModule - I </h2>
+
+                    <ul>
+                        <li>List of modules</li>
+                        <ul>
+                            <li>
+                                Dashboard
+                            </li>
+                            <ul>
+                                <li>Hero-search (component)</li>
+                            </ul>
+                            <li>
+                                Hero-detail
+                            </li>
+                            <li> Heroes </li>
+                            <li> Messages
+                                <ul>
+                                    <li>MessageService</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Create FeatureModule - II </h2>
+                    <pre>
+                            <code class="hljs" data-trim contenteditable>  
+                                    import { DashboardComponent } from "./dashboard.component";
+                                    import { SharedModule } from "../shared/shared.module";
+                                    import { NgModule } from "@angular/core";
+                                    import { HeroSearchComponent } from "./hero-search/hero-search.component";
+                                    import { DashboardRoutingModule } from "./dashboard-routing.module";
+                                    
+                                    @NgModule({
+                                      imports: [
+                                        SharedModule,
+                                        DashboardRoutingModule,
+                                      ],
+                                      declarations: [DashboardComponent, HeroSearchComponent],
+                                      providers: [],
+                                    })
+                                    export class DashboardModule { } 
+                            </code>
+                        </pre>
+                </section>
+                <section>
+                    <h2>Create FeatureModule - III </h2>
+                    <pre>
+                                <code class="hljs" data-trim contenteditable>  
+                                        import { NgModule } from "@angular/core";
+                                        import { Routes, RouterModule } from "@angular/router";
+                                        import { DashboardComponent } from "./dashboard.component";
+                                        
+                                        
+                                        const routes: Routes = [
+                                          {
+                                            path: "",
+                                            component: DashboardComponent,
+                                          },
+                                        ];
+                                        @NgModule({
+                                          imports: [RouterModule.forChild(routes)],
+                                          exports: [RouterModule],
+                                          providers: [],
+                                        })
+                                        export class DashboardRoutingModule { }
+                                </code>
+                            </pre>
+                </section>
+                <section>
+                    <h2>Create FeatureModule - IV </h2>
+                    <pre>
+                                    <code class="hljs" data-trim contenteditable>  
+                                            import { NgModule } from '@angular/core';
+                                            import { RouterModule, Routes } from '@angular/router';
+                                            
+                                            const routes: Routes = [
+                                              { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+                                              { path: 'dashboard', loadChildren: "app/dashboard/dashboard.module#DashboardModule" },
+                                              { path: 'detail', loadChildren: "app/hero-detail/hero-detail.module#HeroDetailModule" },
+                                              { path: 'heroes', loadChildren: "app/heroes/heroes.module#HeroesModule" },
+                                            ];
+                                            
+                                            @NgModule({
+                                              imports: [RouterModule.forRoot(routes)],
+                                              exports: [RouterModule]
+                                            })
+                                            export class AppRoutingModule { }
+                                    </code>
+                                </pre>
+                </section>
+                <section id="results">
+                    <h2>Results</h2>
+                    <div class="columns">
+                        <div class="col">
+                            <img class="plain" src="images/Result_1.png" width="100%" />
+                        </div>
+                        <div class="col">
+                            <img class="plain" src="images/Result_2.png" width="100%" />
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+
+
+
+            <!-- =================== END =================== -->
+            <section data-background="#000000">
+                <h2>Thank You</h2>
+                <div class="columns">
+                    <div class="col">
+                        <div class="qrcode" align="center"></div>
+                        <div class="half-size">
+                            <a class="qrcode-link"></a>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <img class="plain" src="images/heroes/heroes10.gif" width="100%" />
+
+                        <p>
+                            By
+                            <a title="Visit me on Github" href="https://github.com/ccaballerog">Carlos Caballero</a>
+
+                        </p>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- QR Codes -->
+    <script type="text/javascript">
+        // Get presentation URL
+        var qrcode_url = "https://github.com/caballerog/tour-heroes-lazy";
+        if (!/^(localhost|127\.0\.1\.1|)$/.test(location.hostname)) {
+            // host is not localhost, get dynamic URL
+            //keep it simple
+            //qrcode_url = window.location.href;
+            console.log("host is not local, dynamic url: " + window.location.href);
+        }
+
+        // Generate QR Codes : class="qrcode"
+        var qrcode_elements = document.getElementsByClassName('qrcode');
+        for (var i = 0; i < qrcode_elements.length; i++) {
+            var qrcode_el = qrcode_elements[i];
+
+            var qrcode = new QRCode(qrcode_el, {
+                text: qrcode_url,
+                width: 350,
+                height: 350
+            });
+
+            // Alter generated image
+            var img_el = qrcode._el.childNodes[1];
+            img_el.classList.add("plain"); // remove border
+        }
+
+        // Add text to links : class="qrcode-link"
+        var qrcode_link_elements = document.getElementsByClassName('qrcode-link');
+        for (var i = 0; i < qrcode_link_elements.length; i++) {
+            var link_el = qrcode_link_elements[i];
+            link_el.textContent = qrcode_url;
+            link_el.href = qrcode_url;
+        }
+    </script>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+        // More info about config & dependencies:
+        // - https://github.com/hakimel/reveal.js#configuration
+        // - https://github.com/hakimel/reveal.js#dependencies
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            history: true,
+            center: true,
+            transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+            width: 1280,
+            height: 700,
+            /*           width: "100%",
+                      height: "100%",
+                      margin: 0,
+                      minScale: 1,
+                      maxScale: 1, */
+            dependencies: [
+                { src: 'plugin/markdown/marked.js' },
+                { src: 'plugin/markdown/markdown.js' },
+                { src: 'plugin/notes/notes.js', async: true },
+                { src: 'plugin/zoom-js/zoom.js', async: true },
+                { src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+            ]
+        });
+    </script>
+
+</body>
+
+</html>
